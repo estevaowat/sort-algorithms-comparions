@@ -3,30 +3,49 @@
  */
 package sort.algorithms.comparions;
 
+import org.apache.commons.io.IOUtils;
 import sort.algorithms.comparions.implementations.BubbleSort;
+import sort.algorithms.comparions.implementations.MergeSort;
 import sort.algorithms.comparions.implementations.QuickSort;
 import sort.algorithms.comparions.interfaces.ISortAlgorithm;
 import sort.algorithms.comparions.utils.FileCreator;
+import sort.algorithms.comparions.utils.FilesUtils;
 import sort.algorithms.comparions.utils.InputCreator;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class App {
     private static BubbleSort bubbleSort = new BubbleSort();
     private static QuickSort quickSort = new QuickSort();
+    private static MergeSort mergeSort = new MergeSort();
 
 
     public static void main(String[] args) throws IOException {
         try {
             final int size = 100000;
+            final String folder = "/Users/estevaowatanabe/Desktop/projects/sort-algorithms-comparions";
 
+            createInputFiles(folder, size);
 
-            createInputFiles(size);
+            System.out.println("READING BUBBLE SORT FILES");
+            readInputFilesByAlgorithm(folder + "/bubbleSort", bubbleSort);
+
+            System.out.println("READING QUICK SORT FILES");
+            readInputFilesByAlgorithm(folder + "/quickSort", quickSort);
+
+            // System.out.println("READING MERGE SORT FILES");
+            //readInputFilesByAlgorithm(folder + "/mergeSort", mergeSort);
+
 
 //            System.out.println("Measuring Quick sort");
 //            QuickSort quickSort = new QuickSort();
@@ -46,37 +65,29 @@ public class App {
 
     }
 
-    private static void createInputFiles(int size) throws IOException {
-        final String folder = "/Users/estevaowatanabe/Desktop/projects/sort-algorithms-comparions";
+    private static void createInputFiles(String folder, int size) throws IOException {
+
         //bubble sort
         Map<String, int[]> inputs = new HashMap<>();
 
         //bubble sort
-        int[] bestCaseBubbleSort = InputCreator.createOrderedAscInputs(size);
-        int[] averageCaseBubbleSort = InputCreator.createRandomInputs(size);
-        int[] worstCaseBubbleSort = InputCreator.createOrderedDescInputs(size);
+        int[] orderedAscArray = InputCreator.createOrderedAscInputs(size);
+        int[] orderedDescArray = InputCreator.createOrderedDescInputs(size);
+        int[] randomArray = InputCreator.createRandomInputs(size);
 
-        inputs.put("bubbleSort/best_case.txt", bestCaseBubbleSort);
-        inputs.put("bubbleSort/average_case.txt", averageCaseBubbleSort);
-        inputs.put("bubbleSort/worst_case.txt", worstCaseBubbleSort);
+        inputs.put("bubbleSort/ordered_asc_array.txt", orderedAscArray);
+        inputs.put("bubbleSort/ordered_desc_array.txt", orderedDescArray);
+        inputs.put("bubbleSort/random_array.txt", randomArray);
 
-        //quicksort
-        int[] bestCaseQuickSort = InputCreator.createOrderedAscInputs(size);
-        int[] averageCaseQuickSort = InputCreator.createRandomInputs(size);
-        int[] worstCaseQuickSort = InputCreator.createOrderedDescInputs(size);
 
-        inputs.put("quickSort/best_case.txt", bestCaseQuickSort);
-        inputs.put("quickSort/average_case.txt", averageCaseQuickSort);
-        inputs.put("quickSort/worst_case.txt", worstCaseQuickSort);
+        inputs.put("quickSort/ordered_asc_array.txt", orderedAscArray);
+        inputs.put("quickSort/ordered_desc_array.txt", orderedDescArray);
+        inputs.put("quickSort/random_array.txt", randomArray);
 
-        //mergesort
-        int[] bestCaseMergeSort = InputCreator.createOrderedAscInputs(size);
-        int[] averageCaseMergeSort = InputCreator.createRandomInputs(size);
-        int[] worstCaseMergeSort = InputCreator.createOrderedDescInputs(size);
 
-        inputs.put("mergeSort/best_case.txt", bestCaseMergeSort);
-        inputs.put("mergeSort/average_case.txt", averageCaseMergeSort);
-        inputs.put("mergeSort/worst_case.txt", worstCaseMergeSort);
+        inputs.put("mergeSort/ordered_asc_array.txt", orderedAscArray);
+        inputs.put("mergeSort/ordered_desc_array.txt", orderedDescArray);
+        inputs.put("mergeSort/random_array.txt", randomArray);
 
         inputs.forEach((fileName, input) -> {
             String content = formatInputs(input);
@@ -87,7 +98,6 @@ public class App {
             } catch(IOException e) {
                 System.out.println("ERROR CREATING THE FILE: " + pathFile);
             }
-
         });
     }
 
@@ -119,4 +129,23 @@ public class App {
         System.out.println();
     }
 
+    public static void readInputFilesByAlgorithm(String folder, ISortAlgorithm algorithm) throws FileNotFoundException, IOException {
+        Set<File> files = FilesUtils.listFilesFromDirectory(folder);
+
+        for(File file : files) {
+            FileInputStream inputStream = new FileInputStream(file);
+            String content = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+            String[] contentSplit = content.split(",");
+            int[] input = new int[contentSplit.length];
+
+            for(int i = 0; i < contentSplit.length; i++) {
+                input[i] = Integer.parseInt(contentSplit[i]);
+            }
+
+            System.out.println(input.length);
+            measureSortAlgorithm(algorithm, input);
+        }
+
+
+    }
 }

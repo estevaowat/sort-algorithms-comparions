@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileCreator {
+    private FileCreator() {
+    }
 
     public static void createFile(String path, String content) throws IOException {
         File newFile = new File(path);
