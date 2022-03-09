@@ -3,7 +3,7 @@ package sort.algorithms.comparions.utils;
 import java.util.Random;
 
 public class InputCreator {
-    public static int[] createArrayWithRandomNumbers(int size) {
+    public static int[] createRandomInputs(int size) {
         int[] numbers = new int[size];
 
         for(int i = 0; i < size; i++) {
@@ -18,6 +18,4 @@ public class InputCreator {
         final int bound = 100000;
         return randomizer.nextInt(bound);
     }
-
-
 }

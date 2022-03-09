@@ -4,6 +4,7 @@
 package sort.algorithms.comparions;
 
 import sort.algorithms.comparions.implementations.BubbleSort;
+import sort.algorithms.comparions.implementations.QuickSort;
 import sort.algorithms.comparions.interfaces.ISortAlgorithm;
 import sort.algorithms.comparions.utils.InputCreator;
 
@@ -11,15 +12,16 @@ import java.time.Duration;
 import java.time.Instant;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+    private static BubbleSort bubbleSort = new BubbleSort();
+    private static QuickSort quickSort = new QuickSort();
+
 
     public static void main(String[] args) {
         try {
             final int size = 100000;
 
-            int[] numbers = InputCreator.createArrayWithRandomNumbers(size);
+
+            int[] numbers = InputCreator.createRandomInputs(size);
             int[] quickNumbers = numbers.clone();
             int[] mergeNumbers = numbers.clone();
 
@@ -42,6 +44,13 @@ public class App {
 
     }
 
+    private static void createInputFiles(int size) {
+        //bubble sort
+        
+
+    }
+
+
     private static void measureSortAlgorithm(ISortAlgorithm algorithm, int[] numbers) {
         Instant startInstant = Instant.now();
 
@@ -56,7 +65,7 @@ public class App {
         System.out.println("TIME ELAPSED");
         System.out.println("NANOSECONDS: " + durationInNanos);
         System.out.println("MILLISECONDS: " + durationInMillis);
-        System.out.println("SECONDS: " + durationInSeconds);
+
 
         System.out.println();
     }

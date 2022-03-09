@@ -11,6 +11,7 @@ class BubbleSortTest {
     @DisplayName("should sort numbers")
     void shouldSortNumbers() {
         BubbleSort bubbleSort = new BubbleSort();
+
         int[] numbers = {4, 3, 5, 1, 2};
         int[] expected = {1, 2, 3, 4, 5};
 
