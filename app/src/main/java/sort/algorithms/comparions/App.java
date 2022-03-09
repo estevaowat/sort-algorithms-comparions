@@ -6,29 +6,32 @@ package sort.algorithms.comparions;
 import sort.algorithms.comparions.implementations.BubbleSort;
 import sort.algorithms.comparions.implementations.QuickSort;
 import sort.algorithms.comparions.interfaces.ISortAlgorithm;
+import sort.algorithms.comparions.utils.FileCreator;
 import sort.algorithms.comparions.utils.InputCreator;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class App {
     private static BubbleSort bubbleSort = new BubbleSort();
     private static QuickSort quickSort = new QuickSort();
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         try {
             final int size = 100000;
 
 
-            int[] numbers = InputCreator.createRandomInputs(size);
-            int[] quickNumbers = numbers.clone();
-            int[] mergeNumbers = numbers.clone();
+            createInputFiles(size);
 
 //            System.out.println("Measuring Quick sort");
 //            QuickSort quickSort = new QuickSort();
 //            measureSortAlgorithm(quickSort, quickNumbers);
-//
+
 //            System.out.println("Measuring Merge Sort");
 //            MergeSort mergeSort = new MergeSort();
 //            measureSortAlgorithm(mergeSort, mergeNumbers);
@@ -37,17 +40,63 @@ public class App {
             BubbleSort bubbleSort = new BubbleSort();
             measureSortAlgorithm(bubbleSort, numbers);
         } catch(Exception ex) {
-            System.out.println(ex.getCause().toString());
             System.out.println(ex.getMessage());
         }
 
 
     }
 
-    private static void createInputFiles(int size) {
+    private static void createInputFiles(int size) throws IOException {
+        final String folder = "/Users/estevaowatanabe/Desktop/projects/sort-algorithms-comparions";
         //bubble sort
-        
+        Map<String, int[]> inputs = new HashMap<>();
 
+        //bubble sort
+        int[] bestCaseBubbleSort = InputCreator.createOrderedAscInputs(size);
+        int[] averageCaseBubbleSort = InputCreator.createRandomInputs(size);
+        int[] worstCaseBubbleSort = InputCreator.createOrderedDescInputs(size);
+
+        inputs.put("bubbleSort/best_case.txt", bestCaseBubbleSort);
+        inputs.put("bubbleSort/average_case.txt", averageCaseBubbleSort);
+        inputs.put("bubbleSort/worst_case.txt", worstCaseBubbleSort);
+
+        //quicksort
+        int[] bestCaseQuickSort = InputCreator.createOrderedAscInputs(size);
+        int[] averageCaseQuickSort = InputCreator.createRandomInputs(size);
+        int[] worstCaseQuickSort = InputCreator.createOrderedDescInputs(size);
+
+        inputs.put("quickSort/best_case.txt", bestCaseQuickSort);
+        inputs.put("quickSort/average_case.txt", averageCaseQuickSort);
+        inputs.put("quickSort/worst_case.txt", worstCaseQuickSort);
+
+        //mergesort
+        int[] bestCaseMergeSort = InputCreator.createOrderedAscInputs(size);
+        int[] averageCaseMergeSort = InputCreator.createRandomInputs(size);
+        int[] worstCaseMergeSort = InputCreator.createOrderedDescInputs(size);
+
+        inputs.put("mergeSort/best_case.txt", bestCaseMergeSort);
+        inputs.put("mergeSort/average_case.txt", averageCaseMergeSort);
+        inputs.put("mergeSort/worst_case.txt", worstCaseMergeSort);
+
+        inputs.forEach((fileName, input) -> {
+            String content = formatInputs(input);
+            String pathFile = folder + "/" + fileName;
+
+            try {
+                FileCreator.createFile(pathFile, content);
+            } catch(IOException e) {
+                System.out.println("ERROR CREATING THE FILE: " + pathFile);
+            }
+
+        });
+    }
+
+    private static String formatInputs(int[] input) {
+        String[] inputStringified = Arrays.stream(input)
+                .mapToObj(String::valueOf)
+                .toArray(String[]::new);
+
+        return String.join(",", inputStringified);
     }
 
 

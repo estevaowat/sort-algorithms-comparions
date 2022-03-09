@@ -18,4 +18,23 @@ public class InputCreator {
         final int bound = 100000;
         return randomizer.nextInt(bound);
     }
+
+    public static int[] createOrderedAscInputs(int size) {
+        int[] result = new int[size];
+
+        for(int i = 0; i < size; i++) {
+            result[i] = i + 1;
+        }
+        return result;
+    }
+
+    public static int[] createOrderedDescInputs(int size) {
+        int[] result = new int[size];
+
+        for(int i = size; i > 0; i--) {
+            result[size - i] = i;
+        }
+
+        return result;
+    }
 }
