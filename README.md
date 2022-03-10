@@ -1,4 +1,4 @@
-# sort-algorithms-comparions
+# sort-algorithms-comparison
 
 This college project was made to analyze and compare the following sort algorithms:
 
