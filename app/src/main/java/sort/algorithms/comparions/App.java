@@ -30,10 +30,13 @@ public class App {
     private static MergeSort mergeSort = new MergeSort();
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         try {
-            final int size = 100000;
-            final String folder = "/Users/estevaowatanabe/Desktop/projects/sort-algorithms-comparions";
+            final int size = 10000;
+            final String folder = "/Users/estevaowatanabe/Desktop/projects/sort-algorithms-comparions/temp";
+
+            File tempFolder = new File(folder);
+            FilesUtils.deleteDirectory(tempFolder);
 
             createInputFiles(folder, size);
 
@@ -43,31 +46,14 @@ public class App {
             System.out.println("READING QUICK SORT FILES");
             readInputFilesByAlgorithm(folder + "/quickSort", quickSort);
 
-            // System.out.println("READING MERGE SORT FILES");
-            //readInputFilesByAlgorithm(folder + "/mergeSort", mergeSort);
-
-
-//            System.out.println("Measuring Quick sort");
-//            QuickSort quickSort = new QuickSort();
-//            measureSortAlgorithm(quickSort, quickNumbers);
-
-//            System.out.println("Measuring Merge Sort");
-//            MergeSort mergeSort = new MergeSort();
-//            measureSortAlgorithm(mergeSort, mergeNumbers);
-
-            System.out.println("Measuring Bubble Sort");
-            BubbleSort bubbleSort = new BubbleSort();
-            measureSortAlgorithm(bubbleSort, numbers);
+            System.out.println("READING MERGE SORT FILES");
+            readInputFilesByAlgorithm(folder + "/mergeSort", mergeSort);
         } catch(Exception ex) {
             System.out.println(ex.getMessage());
         }
-
-
     }
 
     private static void createInputFiles(String folder, int size) throws IOException {
-
-        //bubble sort
         Map<String, int[]> inputs = new HashMap<>();
 
         //bubble sort
@@ -91,7 +77,7 @@ public class App {
 
         inputs.forEach((fileName, input) -> {
             String content = formatInputs(input);
-            String pathFile = folder + "/" + fileName;
+            String pathFile = "%s/%s".formatted(folder, fileName);
 
             try {
                 FileCreator.createFile(pathFile, content);
@@ -119,13 +105,11 @@ public class App {
         Duration duration = Duration.between(startInstant, endInstant);
         long durationInNanos = duration.toNanos();
         long durationInMillis = duration.toMillis();
-        long durationInSeconds = duration.toSeconds();
+
 
         System.out.println("TIME ELAPSED");
         System.out.println("NANOSECONDS: " + durationInNanos);
         System.out.println("MILLISECONDS: " + durationInMillis);
-
-
         System.out.println();
     }
 
@@ -133,6 +117,7 @@ public class App {
         Set<File> files = FilesUtils.listFilesFromDirectory(folder);
 
         for(File file : files) {
+
             FileInputStream inputStream = new FileInputStream(file);
             String content = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
             String[] contentSplit = content.split(",");
@@ -142,7 +127,8 @@ public class App {
                 input[i] = Integer.parseInt(contentSplit[i]);
             }
 
-            System.out.println(input.length);
+            System.out.println("file = " + file.getName() + ", size = " + input.length);
+
             measureSortAlgorithm(algorithm, input);
         }
 
