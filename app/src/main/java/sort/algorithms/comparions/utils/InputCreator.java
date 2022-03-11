@@ -37,4 +37,10 @@ public class InputCreator {
 
         return result;
     }
+
+    public static void printArray(int[] input) {
+        for(int element : input) {
+            System.out.print(element + " ");
+        }
+    }
 }

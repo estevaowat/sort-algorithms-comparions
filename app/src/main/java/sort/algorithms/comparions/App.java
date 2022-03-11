@@ -14,7 +14,6 @@ import sort.algorithms.comparions.utils.InputCreator;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -25,14 +24,14 @@ import java.util.Map;
 import java.util.Set;
 
 public class App {
-    private static BubbleSort bubbleSort = new BubbleSort();
-    private static QuickSort quickSort = new QuickSort();
-    private static MergeSort mergeSort = new MergeSort();
+    private static final BubbleSort bubbleSort = new BubbleSort();
+    private static final QuickSort quickSort = new QuickSort();
+    private static final MergeSort mergeSort = new MergeSort();
 
 
     public static void main(String[] args) {
         try {
-            final int size = 10000;
+            final int size = 100000;
             final String folder = "/Users/estevaowatanabe/Desktop/projects/sort-algorithms-comparions/temp";
 
             File tempFolder = new File(folder);
@@ -40,23 +39,22 @@ public class App {
 
             createInputFiles(folder, size);
 
-            System.out.println("READING BUBBLE SORT FILES");
-            readInputFilesByAlgorithm(folder + "/bubbleSort", bubbleSort);
+//            System.out.println("READING BUBBLE SORT FILES");
+//            readInputFilesByAlgorithm(folder + "/bubbleSort", bubbleSort);
 
             System.out.println("READING QUICK SORT FILES");
             readInputFilesByAlgorithm(folder + "/quickSort", quickSort);
 
-            System.out.println("READING MERGE SORT FILES");
-            readInputFilesByAlgorithm(folder + "/mergeSort", mergeSort);
+//            System.out.println("READING MERGE SORT FILES");
+//            readInputFilesByAlgorithm(folder + "/mergeSort", mergeSort);
         } catch(Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
 
-    private static void createInputFiles(String folder, int size) throws IOException {
+    private static void createInputFiles(String folder, int size) {
         Map<String, int[]> inputs = new HashMap<>();
 
-        //bubble sort
         int[] orderedAscArray = InputCreator.createOrderedAscInputs(size);
         int[] orderedDescArray = InputCreator.createOrderedDescInputs(size);
         int[] randomArray = InputCreator.createRandomInputs(size);
@@ -65,11 +63,9 @@ public class App {
         inputs.put("bubbleSort/ordered_desc_array.txt", orderedDescArray);
         inputs.put("bubbleSort/random_array.txt", randomArray);
 
-
         inputs.put("quickSort/ordered_asc_array.txt", orderedAscArray);
         inputs.put("quickSort/ordered_desc_array.txt", orderedDescArray);
         inputs.put("quickSort/random_array.txt", randomArray);
-
 
         inputs.put("mergeSort/ordered_asc_array.txt", orderedAscArray);
         inputs.put("mergeSort/ordered_desc_array.txt", orderedDescArray);
@@ -106,18 +102,16 @@ public class App {
         long durationInNanos = duration.toNanos();
         long durationInMillis = duration.toMillis();
 
-
         System.out.println("TIME ELAPSED");
         System.out.println("NANOSECONDS: " + durationInNanos);
         System.out.println("MILLISECONDS: " + durationInMillis);
         System.out.println();
     }
 
-    public static void readInputFilesByAlgorithm(String folder, ISortAlgorithm algorithm) throws FileNotFoundException, IOException {
+    public static void readInputFilesByAlgorithm(String folder, ISortAlgorithm algorithm) throws IOException {
         Set<File> files = FilesUtils.listFilesFromDirectory(folder);
 
         for(File file : files) {
-
             FileInputStream inputStream = new FileInputStream(file);
             String content = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
             String[] contentSplit = content.split(",");
@@ -131,7 +125,5 @@ public class App {
 
             measureSortAlgorithm(algorithm, input);
         }
-
-
     }
 }
