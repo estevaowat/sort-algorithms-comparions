@@ -1,7 +1,6 @@
 package sort.algorithms.comparions.implementations;
 
 import sort.algorithms.comparions.interfaces.ISortAlgorithm;
-import sort.algorithms.comparions.utils.InputCreator;
 
 import java.util.Stack;
 
@@ -9,12 +8,11 @@ public class QuickSort implements ISortAlgorithm {
 
     @Override
     public int[] sort(int[] numbers) {
-        InputCreator.printArray(numbers);
         Stack stack = new Stack();
         stack.push(0);
         stack.push(numbers.length);
-        while(!stack.isEmpty()) {
 
+        while(!stack.isEmpty()) {
             int end = (int) stack.pop();
             int start = (int) stack.pop();
             if(end - start < 2) {
@@ -27,8 +25,6 @@ public class QuickSort implements ISortAlgorithm {
             stack.push(start);
             stack.push(p);
         }
-
-        InputCreator.printArray(numbers);
 
         return numbers;
     }
@@ -62,6 +58,4 @@ public class QuickSort implements ISortAlgorithm {
         arr[low] = arr[pivot];
         arr[pivot] = tmp;
     }
-
-
 }

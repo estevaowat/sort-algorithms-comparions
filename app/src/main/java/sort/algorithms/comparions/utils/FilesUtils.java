@@ -19,15 +19,13 @@ public class FilesUtils {
         return new HashSet<>();
     }
 
-    public static boolean deleteDirectory(File directoryToBeDeleted) {
+    public static void deleteDirectory(File directoryToBeDeleted) {
         File[] allContents = directoryToBeDeleted.listFiles();
         if(allContents != null) {
             for(File file : allContents) {
                 deleteDirectory(file);
             }
         }
-        return directoryToBeDeleted.delete();
+        directoryToBeDeleted.delete();
     }
-
-
 }

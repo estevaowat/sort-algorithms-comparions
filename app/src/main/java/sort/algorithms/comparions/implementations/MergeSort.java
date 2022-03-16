@@ -18,9 +18,7 @@ public class MergeSort implements ISortAlgorithm {
         int[] leftArray = new int[middleIndex];
         int[] rightArray = new int[n - middleIndex];
 
-        for(int i = 0; i < middleIndex; i++) {
-            leftArray[i] = input[i];
-        }
+        System.arraycopy(input, 0, leftArray, 0, middleIndex);
 
         for(int i = middleIndex; i < n; i++) {
             rightArray[i - middleIndex] = input[i];
